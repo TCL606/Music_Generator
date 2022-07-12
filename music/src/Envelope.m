@@ -1,18 +1,21 @@
 function scale = Envelope(t)
     len = length(t);
     
-    slope = 200;
-    alpha = -0.001;
+    x1 = len / 100;
+    cof = inv([x1^2, x1; 2*x1, 1]) * [1,0]';
     
-    u1 = @(x)x < len / slope;
-    u2 = @(x)x >= len / slope & x < len / 2;
-    u3 = @(x)x >= len /2;
+    a = 20;
+    b = 0.0018;
+    shift = len ;
     
-    f1 = @(x)200 / len .* x .* u1(x);
-    f2 = @(x)u2(x);
-    f3 = @(x)exp(alpha * (x - len / 2)) .* u3(x);
+    delta = 0.05;
+    
+    f1 = @(x)(cof(1) * x.^2 + cof(2) .* x) .* (x < x1);
+    f2 = @(x)(1 ./ (1 + a .* exp(b .* (x - shift))) - delta / len .* x) .* (x >= x1);
+   % f2 = @(x)u2(x);
+   % f3 = @(x)exp(alpha * (x - len / 2)) .* u3(x);
     
     li = linspace(1, len, len);
-    scale = f1(li) + f2(li) + f3(li);
+    scale = f1(li) + f2(li);
 end
 

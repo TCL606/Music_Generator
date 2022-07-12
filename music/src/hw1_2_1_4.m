@@ -24,8 +24,8 @@ for i = 1: 1: length(song)
     if i ~= 1
         shiftTime = 0.08;
         shiftLen = shiftTime * fs;
-        t = linspace(-shiftTime, time , time * fs + shiftLen)';
-        sub_melody = sin(2 * pi * song(i, 1) .* t);
+        t = linspace(0, time + shiftTime, time * fs + shiftLen)';
+        sub_melody = sin(2 * pi * song(i, 1) .* t) + 0.2 * sin(2 * pi * song(i, 1) .* t * 2) + 0.3 * sin(2 * pi * song(i, 1) .* t * 3);
         scale = Envelope(sub_melody);
         sub_melody = sub_melody .* scale';
         melLen = length(melody);
@@ -37,7 +37,7 @@ for i = 1: 1: length(song)
         ];
     else
         t = linspace(0, time , time * fs)';
-        sub_melody = sin(2 * pi * song(i, 1) .* t);
+        sub_melody = sin(2 * pi * song(i, 1) .* t) + 0.2 * sin(2 * pi * song(i, 1) .* t * 2) + 0.3 * sin(2 * pi * song(i, 1) .* t * 3);
         scale = Envelope(sub_melody);
         sub_melody = sub_melody .* scale';
         melody = [melody; sub_melody];
