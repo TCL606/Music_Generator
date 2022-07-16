@@ -22,7 +22,7 @@ function varargout = music_gui(varargin)
 
 % Edit the above text to modify the response to help music_gui
 
-% Last Modified by GUIDE v2.5 16-Jul-2022 20:40:17
+% Last Modified by GUIDE v2.5 16-Jul-2022 21:08:18
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -272,6 +272,7 @@ try
     melody = get_melody(tunes, tunes_harmonic, fs, song, beat);
 catch error
     msgbox(error.message, 'ERROR');
+    can_play = true;
     return 
 end
 axes(handles.wav);

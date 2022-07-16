@@ -1,6 +1,8 @@
 function [melody] = get_melody(tunes, tunes_harmonic, fs, song, beat)
     melody = [];
     bar = waitbar(0,'Getting melody ...');
+%     for i = 1: 1: length(song)
+%         song(i, 1) = song(i, 1) + 1;
     for i = 1: 1: length(song)
         time = song(i, 3) * beat;
         if song(i, 1) == 0 || song(i, 2) == 0
@@ -27,7 +29,9 @@ function [melody] = get_melody(tunes, tunes_harmonic, fs, song, beat)
                 sub_melody = sub_melody .* scale';
             end
         end 
-
+        if max(sub_melody) ~= 0
+            sub_melody = sub_melody / max(sub_melody);
+        end
         melLen = length(melody);
         subLen = length(sub_melody);
         if i ~= 1 && melLen - shiftLen >= 0
@@ -36,7 +40,7 @@ function [melody] = get_melody(tunes, tunes_harmonic, fs, song, beat)
                     melody(1: melLen - shiftLen); 
                     melody(melLen - shiftLen + 1: melLen) + sub_melody(1: shiftLen);
                     sub_melody(shiftLen + 1: subLen) 
-                ];
+                ];  
             else
                  melody = [
                     melody(1: melLen - shiftLen); 

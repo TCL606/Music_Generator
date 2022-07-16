@@ -8,7 +8,7 @@ function [tunes, tunes_harmonic, fs] = analyse_tunes(wavpath, piece, base, inter
     [x, fs] = audioread(wavpath);
     x_size = size(x);
     if x_size(2) == 2
-        x12 = x(:,1) + x(:,2); 
+        x12 = x(:, 1) + x(:, 2); 
         x12_max = max(max(x12),abs(min(x12)));
         x = x12 ./ x12_max;      
     end
