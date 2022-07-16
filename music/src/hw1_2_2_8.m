@@ -22,6 +22,8 @@ L1 = length(y1);
 f1 = fs * linspace(0, L1 - 1, L1) / L1;
 subplot(1, 3, 1);
 plot(f1, abs(y1));
+xlabel('f');
+ylabel('amplitude');
 title('single period');
 
 y2 = fft(w2p);
@@ -29,6 +31,8 @@ L2 = length(y2);
 f2 = fs * linspace(0, L2 - 1, L2) / L2;
 subplot(1, 3, 2);
 plot(f2, abs(y2));
+xlabel('f');
+ylabel('amplitude');
 title('10 periods');
 
 w2p_100 = repmat(w2p, 100, 1);
@@ -37,17 +41,27 @@ L3 = length(y3);
 f3 = fs * linspace(0, L3 - 1, L3) / L3;
 subplot(1, 3, 3);
 plot(f3, abs(y3));
+xlabel('f');
+ylabel('amplitude');
 title('1000 periods');
 
 rep = 10 * 100;
-idx = linspace(1, length(y3), length(y3));
-idx = rem(idx, rep) == 1;
-period_amp = abs(y3(idx));
+period_amp = zeros(round(L3 / rep) + 1, 1);
+period_freidx = zeros(round(L3 / rep) + 1, 1);
+interval = rep;
+period_amp(1) = abs(y3(1));
+period_freidx(1) = 0;
+for i = 1: 1: length(period_amp) - 1
+    [period_amp(i + 1), period_freidx(i + 1)] = max(abs(y3(round((i - 0.5) * interval): min(round((i + 0.5) * interval), end))));
+    period_freidx(i + 1) = period_freidx(i + 1) + round(i - 0.5) * interval;
+end
 period_amp = period_amp / period_amp(2);
+period_fre = fs * period_freidx / L3;
 figure(2);
-plot([0 : length(period_amp) - 1]', period_amp);
+plot(period_fre, period_amp);
 title("amplitude");
-xlabel('idx');
+xlabel('frequency');
 ylabel('relative amplitude');
 
-disp([[0 : length(period_amp) - 1]', period_amp]);
+format bank
+disp([[0 : length(period_amp) - 1]', period_fre, period_amp]);
