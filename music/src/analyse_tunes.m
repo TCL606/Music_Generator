@@ -2,7 +2,9 @@ function [tunes, tunes_harmonic, fs] = analyse_tunes(wavpath, piece, base, inter
     if(~exist('ifplot','var'))
         ifplot = 1;  
     end
-
+    if piece > 1 || piece <= 0
+        piece = 1;
+    end
     [x, fs] = audioread(wavpath);
     x_size = size(x);
     if x_size(2) == 2
@@ -10,7 +12,7 @@ function [tunes, tunes_harmonic, fs] = analyse_tunes(wavpath, piece, base, inter
         x12_max = max(max(x12),abs(min(x12)));
         x = x12 ./ x12_max;      
     end
-    x = x(1: round(end / piece));
+    x = x(1: round(end * piece));
     if ifplot
         subplot(6, 1, 1);
         plot(linspace(0, length(x) - 1, length(x)) / fs, x);

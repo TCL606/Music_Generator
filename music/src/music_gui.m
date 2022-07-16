@@ -22,7 +22,7 @@ function varargout = music_gui(varargin)
 
 % Edit the above text to modify the response to help music_gui
 
-% Last Modified by GUIDE v2.5 16-Jul-2022 14:12:03
+% Last Modified by GUIDE v2.5 16-Jul-2022 20:40:17
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -194,15 +194,17 @@ function analyse_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 wavpath = get(handles.wavpath, 'string');
-piece = str2num(get(handles.piece, 'string'));
+piece = str2double(get(handles.piece, 'string'));
 base = [110, 220, 440, 880]';
 interval = 4000;
 maximum_harmonic = 7;
-global tunes tunes_harmonic fs
+global tunes tunes_harmonic fs can_play
 try
     [tunes, tunes_harmonic, fs] = analyse_tunes(wavpath, piece, base, interval, maximum_harmonic, 0);
+    can_play = true;
 catch error
     f = msgbox(error.message, 'ERROR');
+    can_play = false;
 end
 
 
@@ -256,18 +258,51 @@ function play_Callback(hObject, eventdata, handles)
 % hObject    handle to play (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-global tunes tunes_harmonic fs
+global tunes tunes_harmonic fs rect_bar can_play
 try
+    if ~can_play  
+        msgbox("Cannot play the song now!", "ERROR");
+        return
+    end
+    can_play = false; % other song cannot be played now
     songpath = get(handles.songpath, 'string');
     file = loadjson(songpath);
     song = file.song;
     beat = str2double(get(handles.beat, 'string'));
-
     melody = get_melody(tunes, tunes_harmonic, fs, song, beat);
 catch error
-    f = msgbox(error.message, 'ERROR');
+    msgbox(error.message, 'ERROR');
     return 
 end
-
+axes(handles.wav);
 plot([0 : length(melody) - 1] / fs, melody);
+set(gca, 'XLim', [0  (length(melody) - 1) / fs]);
+
+% plot progress bar
+axes(handles.progress); 
+line([0,1,1,0], [0,0,1,1], 'Color', 'k', 'EraseMode', 'none');
+try
+    set(rect_bar,'XData',[0 0 0 0]);
+catch
+end
+rect_bar = patch([0,1,1,0], [0,0,1,1], 'b', 'EdgeColor', 'b', 'EraseMode','none');
+TotalTime = length(melody) / fs;
+time = 0;
+set(handles.progress, 'XTick', [], 'YTick', []);
 sound(melody, fs);
+while time < TotalTime
+    set(rect_bar, 'XData', [0 time / TotalTime time / TotalTime 0]);
+    drawnow;
+    pause(1);
+    time = time + 1;
+end
+can_play = true;
+
+
+% --- Executes during object creation, after setting all properties.
+function play_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to play (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+global can_play
+can_play = false;

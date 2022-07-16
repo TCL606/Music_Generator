@@ -5,7 +5,7 @@ wavpath = "..//resource//piano.wav";
 base = [110, 220, 440, 880]';
 interval = 4000;
 maximum_harmonic = 7;
-piece = 5;
+piece = 1 / 5;
 [tunes, tunes_harmonic, fs] = analyse_tunes(wavpath, piece, base, interval, maximum_harmonic);
 song = [    
     [0, 0, 0.5];
@@ -188,5 +188,6 @@ melody = get_melody(tunes, tunes_harmonic, fs, song, beat);
 
 figure(2);
 plot([0 : length(melody) - 1] / fs, melody);
+set(gca, 'XLim', [0  (length(melody) - 1) / fs]);
 sound(melody, fs);
 audiowrite('hw_1_2_3_12.wav', melody, fs);

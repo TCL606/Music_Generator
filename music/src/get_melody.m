@@ -1,5 +1,6 @@
 function [melody] = get_melody(tunes, tunes_harmonic, fs, song, beat)
     melody = [];
+    bar = waitbar(0,'Getting melody ...');
     for i = 1: 1: length(song)
         time = song(i, 3) * beat;
         if song(i, 1) == 0 || song(i, 2) == 0
@@ -45,6 +46,8 @@ function [melody] = get_melody(tunes, tunes_harmonic, fs, song, beat)
         else
             melody = [melody; sub_melody];
         end
+        waitbar(i / length(song), bar, 'Getting melody ...');
     end
+    close(bar);
 end
 
