@@ -1,4 +1,8 @@
-function [tunes, tunes_harmonic, fs] = analyse_tunes(wavpath, piece, base, interval, maximum_harmonic)
+function [tunes, tunes_harmonic, fs] = analyse_tunes(wavpath, piece, base, interval, maximum_harmonic, ifplot)
+    if(~exist('ifplot','var'))
+        ifplot = 1;  
+    end
+
     [x, fs] = audioread(wavpath);
     x_size = size(x);
     if x_size(2) == 2
@@ -7,50 +11,64 @@ function [tunes, tunes_harmonic, fs] = analyse_tunes(wavpath, piece, base, inter
         x = x12 ./ x12_max;      
     end
     x = x(1: round(end / piece));
-    subplot(6, 1, 1);
-    plot(linspace(0, length(x) - 1, length(x)) / fs, x);
-    title('x');
+    if ifplot
+        subplot(6, 1, 1);
+        plot(linspace(0, length(x) - 1, length(x)) / fs, x);
+        title('x');
+    end
 
     y1 = x.^2;
-    subplot(6, 1, 2);
-    plot(linspace(0, length(y1) - 1, length(y1)) / fs, y1);
-    title('y1');
+    if ifplot
+        subplot(6, 1, 2);
+        plot(linspace(0, length(y1) - 1, length(y1)) / fs, y1);
+        title('y1');
+    end
 
     w2 = barthannwin(round(fs / 11));
     y2 = conv(w2, y1);
-    subplot(6, 1, 3);
-    plot(linspace(0, length(y2) - 1, length(y2)) / fs, y2);
-    title('y2');
+    if ifplot
+        subplot(6, 1, 3);
+        plot(linspace(0, length(y2) - 1, length(y2)) / fs, y2);
+        title('y2');
+    end
 
     y3 = y2(2: end) - y2(1: end - 1);
-    subplot(6, 1, 4);
-    plot(linspace(0, length(y3) - 1, length(y3)) / fs, y3);
-    title('y3');
+    if ifplot
+        subplot(6, 1, 4);
+        plot(linspace(0, length(y3) - 1, length(y3)) / fs, y3);
+        title('y3');
+    end
 
     y4 = max(y3, 0);
-    subplot(6, 1, 5);
-    plot(linspace(0, length(y4) - 1, length(y4)) / fs, y4);
-    title('y4');
+    if ifplot
+        subplot(6, 1, 5);
+        plot(linspace(0, length(y4) - 1, length(y4)) / fs, y4);
+        title('y4');
+    end
 
     threshold_amp = 0.0015;
     y4(y4 < threshold_amp) = 0;
     y5 = y4;
-    subplot(6, 1, 6);
-    plot(linspace(0, length(y4) - 1, length(y4)) / fs, y4);
-    title('y5');
+    if ifplot
+        subplot(6, 1, 6);
+        plot(linspace(0, length(y4) - 1, length(y4)) / fs, y4);
+        title('y5');
+    end
 
    % interval = 500;
     threshold_interval = fs / 8; 
     [peak_val, real_idx] = find_peak(y5, interval, threshold_interval);
-
-    subplot(6, 1, 6);
-    hold on
-    scatter((real_idx - 1) / fs, peak_val, 20, 'ro');
-    hold off
-    subplot(6, 1, 1);
-    hold on
-    scatter((real_idx - 1) / fs, zeros([length(real_idx), 1]), 20, 'y', 'filled');
-    hold off
+    
+    if ifplot
+        subplot(6, 1, 6);
+        hold on
+        scatter((real_idx - 1) / fs, peak_val, 20, 'ro');
+        hold off
+        subplot(6, 1, 1);
+        hold on
+        scatter((real_idx - 1) / fs, zeros([length(real_idx), 1]), 20, 'y', 'filled');
+        hold off
+    end
 
     base_fre = zeros(length(real_idx) + 1, 1);
     % base = [110, 220, 440, 880]';

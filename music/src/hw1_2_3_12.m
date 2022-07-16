@@ -6,6 +6,7 @@ base = [110, 220, 440, 880]';
 interval = 4000;
 maximum_harmonic = 7;
 piece = 5;
+[tunes, tunes_harmonic, fs] = analyse_tunes(wavpath, piece, base, interval, maximum_harmonic);
 song = [    
     [0, 0, 0.5];
     [2, 6, 0.25];
@@ -183,7 +184,7 @@ song = [
 
 beat = 1 / 0.733;
 
-[melody, fs] = get_melody(wavpath, piece, base, interval, maximum_harmonic, song, beat);
+melody = get_melody(tunes, tunes_harmonic, fs, song, beat);
 
 figure(2);
 plot([0 : length(melody) - 1] / fs, melody);

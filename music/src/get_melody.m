@@ -1,5 +1,4 @@
-function [melody, fs] = get_melody(wavpath, piece, base, interval, maximum_harmonic, song, beat)
-    [tunes, tunes_harmonic, fs] = analyse_tunes(wavpath, piece, base, interval, maximum_harmonic);
+function [melody] = get_melody(tunes, tunes_harmonic, fs, song, beat)
     melody = [];
     for i = 1: 1: length(song)
         time = song(i, 3) * beat;
