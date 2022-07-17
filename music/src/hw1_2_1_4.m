@@ -22,7 +22,7 @@ melody = [];
 for i = 1: 1: length(song)
     time = song(i, 2) * beat;
     if i ~= 1
-        shiftTime = 0.08;
+        shiftTime = beat / 5;
         shiftLen = shiftTime * fs;
         t = linspace(0, time + shiftTime, time * fs + shiftLen)';
         sub_melody = sin(2 * pi * song(i, 1) .* t) + 0.2 * sin(2 * pi * song(i, 1) .* t * 2) + 0.3 * sin(2 * pi * song(i, 1) .* t * 3);
@@ -50,7 +50,10 @@ for i = 1: 1: length(song)
     end
         
 end
-
-plot([0 : length(melody) - 1] / fs, melody);
+time = [0 : length(melody) - 1] / fs;
+figure(1);
+plot(time, melody);
+figure(2);
+plot(time(1: end / 200), melody(1: end / 200));
 sound(melody, fs);
 audiowrite('hw_1_2_1_2.wav', melody, fs);

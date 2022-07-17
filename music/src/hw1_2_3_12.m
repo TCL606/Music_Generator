@@ -1,7 +1,7 @@
 clear all, close all, clc;
 
 %wavpath = "..//音乐合成所需资源//fmt.wav";
-wavpath = "..//resource//piano.wav";
+wavpath = "..//resource//sky.wav";
 base = [110, 220, 440, 880]';
 interval = 4000;
 maximum_harmonic = 7;
@@ -189,5 +189,6 @@ melody = get_melody(tunes, tunes_harmonic, fs, song, beat);
 figure(2);
 plot([0 : length(melody) - 1] / fs, melody);
 set(gca, 'XLim', [0  (length(melody) - 1) / fs]);
+set(gca, 'YLim', [-1.5 1.5]);
 sound(melody, fs);
 audiowrite('hw_1_2_3_12.wav', melody, fs);

@@ -13,6 +13,7 @@ function [tunes, tunes_harmonic, fs] = analyse_tunes(wavpath, piece, base, inter
         x = x12 ./ x12_max;      
     end
     x = x(1: round(end * piece));
+    
     if ifplot
         subplot(6, 1, 1);
         plot(linspace(0, length(x) - 1, length(x)) / fs, x);

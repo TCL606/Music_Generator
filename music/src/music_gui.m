@@ -22,7 +22,7 @@ function varargout = music_gui(varargin)
 
 % Edit the above text to modify the response to help music_gui
 
-% Last Modified by GUIDE v2.5 17-Jul-2022 00:55:30
+% Last Modified by GUIDE v2.5 17-Jul-2022 16:09:27
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -265,11 +265,25 @@ try
         return
     end
     can_play = false; % other song cannot be played now
-    songpath = get(handles.songpath, 'string');
-    file = loadjson(songpath);
-    song = file.song;
-    beat = str2double(get(handles.beat, 'string'));
-    melody = get_melody(tunes, tunes_harmonic, fs, song, beat);
+    songpaths = get(handles.songpath, 'string');
+    songpaths = strsplit(songpaths, ',');
+    for i = 1: 1: length(songpaths)
+        file = loadjson(songpaths{i});
+        song = file.song;
+        beat = str2double(get(handles.beat, 'string'));
+        if i == 1
+            melody = get_melody(tunes, tunes_harmonic, fs, song, beat);
+        else 
+            melody_temp = 1 / 2 * get_melody(tunes, tunes_harmonic, fs, song, beat);
+            if length(melody_temp) < length(melody)
+                melody_temp = [melody_temp; zeros(length(melody) - length(melody_temp), 1)];
+            elseif length(melody_temp) > length(melody)
+                melody = [melody; zeros(length(melody_temp) - length(melody), 1)];
+            end
+            melody = melody + melody_temp;
+        end
+        melody = melody / max(melody);
+    end
 catch error
     msgbox(error.message, 'ERROR');
     can_play = true;
@@ -320,3 +334,10 @@ try
 catch error
     msgbox(error.message, 'ERROR');
 end
+
+
+% --- Executes on button press in stop.
+function stop_Callback(hObject, eventdata, handles)
+% hObject    handle to stop (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
