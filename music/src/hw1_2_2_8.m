@@ -49,19 +49,20 @@ rep = 10 * 100;
 period_amp = zeros(round(L3 / rep) + 1, 1);
 period_freidx = zeros(round(L3 / rep) + 1, 1);
 interval = rep;
+abs_y3 = abs(y3);
 period_amp(1) = abs(y3(1));
 period_freidx(1) = 0;
 for i = 1: 1: length(period_amp) - 1
-    [period_amp(i + 1), period_freidx(i + 1)] = max(abs(y3(round((i - 0.5) * interval): min(round((i + 0.5) * interval), end))));
-    period_freidx(i + 1) = period_freidx(i + 1) + round(i - 0.5) * interval;
+    [period_amp(i + 1), period_freidx(i + 1)] = max(abs_y3(round((i - 0.5) * interval): min(round((i + 0.5) * interval), length(abs_y3))));
+    period_freidx(i + 1) = period_freidx(i + 1) + round((i - 0.5) * interval) - 1;
 end
 period_amp = period_amp / period_amp(2);
 period_fre = fs * period_freidx / L3;
-figure(2);
-plot(period_fre, period_amp);
-title("amplitude");
-xlabel('frequency');
-ylabel('relative amplitude');
+% figure(2);
+% plot(period_fre, period_amp);
+% title("amplitude");
+% xlabel('frequency');
+% ylabel('relative amplitude');
 
 format bank
 disp([[0 : length(period_amp) - 1]', period_fre, period_amp]);

@@ -6,7 +6,7 @@ function [peak_val, peak_idx] = find_peak(y, interval, threshold_interval)
         interval = 1;
     end
     while i <= length(dif)
-        if dif(i) * dif(i - 1) < 0
+        if dif(i) < 0 && dif(i - 1) >= 0
             idx = [idx; i];
             i = i + interval; 
         else

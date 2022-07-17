@@ -195,7 +195,7 @@ function analyse_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 wavpath = get(handles.wavpath, 'string');
 piece = str2double(get(handles.piece, 'string'));
-base = [110, 220, 440, 880]';
+base = [55, 110, 220, 440, 880]';
 interval = 4000;
 maximum_harmonic = 7;
 global tunes tunes_harmonic fs can_play
@@ -292,7 +292,7 @@ end
 axes(handles.wav);
 plot([0 : length(melody) - 1] / fs, melody);
 set(gca, 'XLim', [0  (length(melody) - 1) / fs]);
-
+set(gca, 'YLim', [-1.5  1.5]);
 % plot progress bar
 axes(handles.progress); 
 line([0,1,1,0], [0,0,1,1], 'Color', 'k', 'EraseMode', 'none');

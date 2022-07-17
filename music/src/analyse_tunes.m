@@ -63,13 +63,13 @@ function [tunes, tunes_harmonic, fs] = analyse_tunes(wavpath, piece, base, inter
     [peak_val, real_idx] = find_peak(y5, interval, threshold_interval);
     
     if ifplot
-        subplot(6, 1, 6);
-        hold on
-        scatter((real_idx - 1) / fs, peak_val, 20, 'ro');
-        hold off
         subplot(6, 1, 1);
         hold on
         scatter((real_idx - 1) / fs, zeros([length(real_idx), 1]), 20, 'y', 'filled');
+        hold off
+        subplot(6, 1, 6);
+        hold on
+        scatter((real_idx - 1) / fs, peak_val, 20, 'ro');
         hold off
     end
 

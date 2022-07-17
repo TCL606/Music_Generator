@@ -89,11 +89,12 @@ dandelion_accomp = "0,1.5  1_,0.5  5_,0.5  3,1  7__,0.5  5_,0.5  2,1  \
     4__,0.5  1_,0.5  6_,0.5  4__,0.5  4_,0.5  2_,0.5  5_,1 \
     1_,0.5, 5_,0.5  2,0.5  5_,0.5  1__,2"
 
-melody = dandelion_main
+melody = dandelion_accomp
+jsonfile = "accomp.json"
 melody_li = melody.split()
 song = []
 
-# base = [110, 220, 440, 880]
+# base = [55, 110, 220, 440, 880]
 total_beat = 0
 for mel in melody_li:
     tune_beat = mel.split(',')
@@ -114,6 +115,8 @@ for mel in melody_li:
         else:
             if tune_beat[0][1] == '_' and tune_beat[0][2] == '_':
                 idx_1 = 1
+            elif tune_beat[0][1] == '+' and tune_beat[0][2] == '+':
+                idx_1 = 5
             else:
                 idx_1 = 3
         idx_1 += (t + base - 1) // 12
@@ -123,6 +126,6 @@ for mel in melody_li:
     song.append([idx_1, idx_0, beat])
 
 json_song = {'song': song}
-with open("main.json", "w") as f:
+with open(jsonfile, "w") as f:
     _ = json.dump(json_song, f)
 print(total_beat, len(melody_li))

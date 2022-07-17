@@ -1,13 +1,13 @@
 clear all, close all, clc;
 
-base = [110, 220, 440, 880]';
+base = [55, 110, 220, 440, 880]';
 power = linspace(0, 1 - 1/12, 12);
 rate = 2.^power;
 tunes = base * rate;
 fs = 8e3;
 
 beat = 1 / 0.733;
-file = loadjson('../resource/song_2.json');
+file = loadjson('../resource/cong_bie_hou.json');
 song = file.song;
 
 % song = [
@@ -228,5 +228,6 @@ melody = get_melody(tunes, tunes_harmonic, fs, song, beat);
 % end
 
 plot([0 : length(melody) - 1] / fs, melody);
+set(gca, 'YLim', [-1.5 1.5]);
 sound(melody, fs);
 audiowrite('hw_1_2_1_5.wav', melody, fs);
