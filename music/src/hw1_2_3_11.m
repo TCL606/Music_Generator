@@ -45,6 +45,9 @@ for i = 1: 1: length(song)
         end
     end 
     
+    if max(sub_melody) ~= 0
+        sub_melody = sub_melody / max(sub_melody);
+    end
     if i ~= 1
         melLen = length(melody);
         subLen = length(sub_melody);

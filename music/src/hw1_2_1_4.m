@@ -28,6 +28,9 @@ for i = 1: 1: length(song)
         sub_melody = sin(2 * pi * song(i, 1) .* t) + 0.2 * sin(2 * pi * song(i, 1) .* t * 2) + 0.3 * sin(2 * pi * song(i, 1) .* t * 3);
         scale = Envelope(sub_melody);
         sub_melody = sub_melody .* scale';
+        if max(sub_melody) ~= 0
+            sub_melody = sub_melody / max(sub_melody);
+        end
         melLen = length(melody);
         subLen = length(sub_melody);
         melody = [
@@ -40,6 +43,9 @@ for i = 1: 1: length(song)
         sub_melody = sin(2 * pi * song(i, 1) .* t) + 0.2 * sin(2 * pi * song(i, 1) .* t * 2) + 0.3 * sin(2 * pi * song(i, 1) .* t * 3);
         scale = Envelope(sub_melody);
         sub_melody = sub_melody .* scale';
+        if max(sub_melody) ~= 0
+            sub_melody = sub_melody / max(sub_melody);
+        end
         melody = [melody; sub_melody];
     end
         

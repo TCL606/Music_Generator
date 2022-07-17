@@ -10,7 +10,7 @@ function [melody] = get_melody(tunes, tunes_harmonic, fs, song, beat)
         else
             base_fre = tunes(song(i, 1), song(i, 2));
             if i ~= 1
-                shiftTime = 0.05;
+                shiftTime = beat / 5;
                 shiftLen = round(shiftTime * fs);
                 t = linspace(0, time + shiftTime, time * fs + shiftLen)';
                 sub_melody = sin(2 * pi * base_fre .* t);

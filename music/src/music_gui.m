@@ -22,7 +22,7 @@ function varargout = music_gui(varargin)
 
 % Edit the above text to modify the response to help music_gui
 
-% Last Modified by GUIDE v2.5 16-Jul-2022 21:08:18
+% Last Modified by GUIDE v2.5 17-Jul-2022 00:55:30
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -258,7 +258,7 @@ function play_Callback(hObject, eventdata, handles)
 % hObject    handle to play (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
-global tunes tunes_harmonic fs rect_bar can_play
+global tunes tunes_harmonic fs rect_bar can_play melody
 try
     if ~can_play  
         msgbox("Cannot play the song now!", "ERROR");
@@ -307,3 +307,16 @@ function play_CreateFcn(hObject, eventdata, handles)
 % handles    empty - handles not created until after all CreateFcns called
 global can_play
 can_play = false;
+
+
+% --- Executes on button press in save.
+function save_Callback(hObject, eventdata, handles)
+% hObject    handle to save (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global melody fs
+try
+    audiowrite('music.wav', melody, fs);
+catch error
+    msgbox(error.message, 'ERROR');
+end
