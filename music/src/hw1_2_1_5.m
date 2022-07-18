@@ -7,7 +7,7 @@ tunes = base * rate;
 fs = 8e3;
 
 beat = 1 / 0.733;
-file = loadjson('../resource/cong_bie_hou.json');
+file = loadjson('../resource/left.json');
 song = file.song;
 
 % song = [

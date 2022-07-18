@@ -22,7 +22,7 @@ function varargout = music_gui_export(varargin)
 
 % Edit the above text to modify the response to help music_gui_export
 
-% Last Modified by GUIDE v2.5 17-Jul-2022 22:04:18
+% Last Modified by GUIDE v2.5 18-Jul-2022 10:30:24
 
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
@@ -195,7 +195,7 @@ function analyse_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)
 wavpath = get(handles.wavpath, 'string');
 piece = str2double(get(handles.piece, 'string'));
-base = [110, 220, 440, 880]';
+base = [55, 110, 220, 440, 880]';
 interval = 4000;
 maximum_harmonic = 7;
 global tunes tunes_harmonic fs can_play
@@ -292,7 +292,7 @@ end
 axes(handles.wav);
 plot([0 : length(melody) - 1] / fs, melody);
 set(gca, 'XLim', [0  (length(melody) - 1) / fs]);
-
+set(gca, 'YLim', [-1.5  1.5]);
 % plot progress bar
 axes(handles.progress); 
 line([0,1,1,0], [0,0,1,1], 'Color', 'k', 'EraseMode', 'none');
@@ -1241,7 +1241,7 @@ h13 = uicontrol(...
 'Parent',h12,...
 'Units','characters',...
 'FontUnits',get(0,'defaultuicontrolFontUnits'),...
-'String','../resource/main.json,../resource/accomp.json',...
+'String','../resource/dandelion_main.json,../resource/dandelion_accomp.json',...
 'Style','edit',...
 'Position',[88.5323076923077 7.88098618820188 46.4758974358974 2.43935286777677],...
 'BackgroundColor',[1 1 1],...
